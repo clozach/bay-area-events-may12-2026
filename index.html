@@ -74,11 +74,21 @@ body{
   gap:18px;
   margin-bottom:4px;
 }
+.birthday-num{
+  display:inline-block;
+  font-size:1.62em;
+  line-height:1;
+  vertical-align:baseline;
+  transform:translateY(3px);
+  letter-spacing:.05em;
+}
 .birthday-greet sup{
   font-size:.65em;
   letter-spacing:0;
   vertical-align:super;
-  margin-left:1px;
+  margin-left:-3px;
+  position:relative;
+  top:-3px;
 }
 .birthday-rule{
   display:inline-block;
@@ -121,12 +131,14 @@ body{
   display:flex;
   align-items:center;
   gap:16px;
+  flex-wrap:wrap;
   position:sticky;
   top:0;
   z-index:100;
   box-shadow:0 4px 14px rgba(61,47,32,.28);
   border-bottom:3px double var(--tan);
 }
+.hdr-l{flex:1 1 240px;min-width:0}
 .hdr-title{
   font-family:var(--display);
   font-size:1.18rem;
@@ -298,6 +310,47 @@ body{
 .ev-ico{position:absolute;bottom:5px;right:8px;font-size:.9rem;opacity:.55}
 .evb.sf .ev-ico{color:var(--sf)}
 .evb.eb .ev-ico{color:var(--eb)}
+.evb.sold-out{filter:saturate(.55)}
+.evb.sold-out .ev-title,
+.evb.sold-out .ev-city,
+.evb.sold-out .ev-drive,
+.evb.sold-out .ev-cost{opacity:.55}
+.sold-stamp{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  z-index:2;
+  overflow:hidden;
+}
+.sold-stamp::before{
+  content:"";
+  position:absolute;
+  left:-12%;
+  right:-12%;
+  top:50%;
+  height:2px;
+  background:#a23a2a;
+  transform:translateY(-50%) rotate(-18deg);
+  opacity:.85;
+}
+.sold-stamp-text{
+  position:relative;
+  font-family:var(--display);
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#a23a2a;
+  background:var(--bone);
+  padding:1px 6px;
+  border:1.5px solid #a23a2a;
+  border-radius:2px;
+  transform:rotate(-18deg);
+  box-shadow:0 1px 3px rgba(61,47,32,.12);
+}
 .ovl{
   position:fixed;
   inset:0;
@@ -497,6 +550,204 @@ body{
 .mdt{padding:9px 14px;font-family:var(--serif);font-size:.88rem;color:var(--sepia)}
 .mdt a{color:var(--camel);text-decoration:none;display:flex;align-items:center;gap:5px;font-style:italic}
 .mdt a:hover{color:var(--sepia);text-decoration:underline}
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:var(--linen);
+  border-bottom:1px solid var(--tan);
+  padding:10px 18px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.search-wrap{
+  flex:1 1 220px;
+  min-width:180px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--bone);
+  border:1px solid var(--tan);
+  border-radius:999px;
+  padding:6px 12px;
+  color:var(--sepia);
+}
+.search-wrap i.fa-magnifying-glass{font-size:.78rem;opacity:.6}
+.search-input{
+  flex:1;
+  border:0;
+  background:transparent;
+  outline:none;
+  font-family:var(--serif);
+  font-size:.95rem;
+  color:var(--ink);
+  min-width:0;
+}
+.search-input::placeholder{color:var(--camel);opacity:.7;font-style:italic}
+.search-clear{
+  border:0;background:transparent;color:var(--camel);
+  font-size:1.05rem;cursor:pointer;padding:0 2px;line-height:1;
+}
+.search-clear:hover{color:var(--sepia)}
+.tabs{display:flex;gap:6px;flex:0 0 auto}
+.tab-btn{
+  font-family:var(--display);
+  font-size:.74rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:600;
+  background:var(--bone);
+  color:var(--sepia);
+  border:1px solid var(--tan);
+  border-radius:999px;
+  padding:6px 14px;
+  cursor:pointer;
+  transition:background .12s,color .12s,border-color .12s;
+}
+.tab-btn:hover{background:var(--cream-deep)}
+.tab-btn.active{background:var(--sepia);color:var(--linen);border-color:var(--sepia)}
+.tab-btn[data-tab=sf].active{background:var(--sf);border-color:var(--sf)}
+.tab-btn[data-tab=eb].active{background:var(--eb);border-color:var(--eb)}
+.evb.dimmed,.pill.dimmed{
+  opacity:.18;
+  filter:grayscale(.6);
+  pointer-events:none;
+}
+
+/* --- mobile diary (≤720px) --- */
+.diary-mobile{display:none}
+.diary-mobile .mcol-wrap{display:flex}
+.diary-mobile .tax{flex:0 0 54px}
+.diary-mobile .mcol{flex:1;position:relative;min-width:0}
+.diary-mobile .mclust{position:absolute;left:0;right:0;padding:0 4px}
+.diary-mobile .mclust .evb{position:relative;top:0;left:0;width:100%;height:100%}
+.diary-mobile .mrail{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  height:100%;
+  -webkit-overflow-scrolling:touch;
+  padding-right:18px;
+  scrollbar-width:none;
+}
+.diary-mobile .mrail::-webkit-scrollbar{display:none}
+.diary-mobile .mrail .evb{
+  flex:0 0 calc(100% - 18px);
+  scroll-snap-align:start;
+  position:relative;
+}
+/* --- Frankenstein knife-switch (SF ↔ East Bay) --- */
+.fswitch{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  user-select:none;
+}
+.fs-label{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:.74rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  background:transparent;
+  border:0;
+  padding:2px 0;
+  cursor:pointer;
+  color:#7a6a4f;
+  opacity:.55;
+  transition:color .22s ease,opacity .22s ease,text-shadow .22s ease;
+  white-space:nowrap;
+  font-family:inherit;
+}
+.fs-label{font-family:var(--display)}
+.fswitch[data-connected="sf"] .fs-label.sf{
+  color:#ffd4ca;opacity:1;
+  text-shadow:0 0 6px #ff6448,0 0 14px rgba(255,100,72,.6),0 0 24px rgba(255,80,60,.25);
+}
+.fswitch[data-connected="eb"] .fs-label.eb{
+  color:#dcf0c4;opacity:1;
+  text-shadow:0 0 6px #6cc24a,0 0 14px rgba(110,200,90,.55),0 0 24px rgba(110,200,90,.22);
+}
+.fs-rig{
+  position:relative;
+  width:96px;height:48px;
+  flex:0 0 auto;
+  cursor:pointer;
+}
+.fs-base{
+  position:absolute;left:4px;right:4px;bottom:0;height:10px;
+  background:linear-gradient(180deg,#4a341f 0%,#1f140a 100%);
+  border:1px solid #120b06;border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(255,210,170,.08),0 1px 0 rgba(0,0,0,.3);
+}
+.fs-post{
+  position:absolute;bottom:8px;width:6px;height:14px;
+  background:linear-gradient(180deg,#d2ad84 0%,#7a5430 60%,#3a2818 100%);
+  border-radius:2px 2px 0 0;border:1px solid #1a100a;
+}
+.fs-post.sf{left:9px}
+.fs-post.eb{right:9px}
+.fs-pivot-post{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  width:7px;height:20px;
+  background:linear-gradient(180deg,#e0c096,#6b4928 70%,#2a1a10);
+  border-radius:3px 3px 0 0;border:1px solid #1a100a;z-index:1;
+}
+.fs-orb{
+  position:absolute;bottom:20px;width:12px;height:12px;border-radius:50%;
+  z-index:2;border:1px solid #1a100a;
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.35) 0%, transparent 38%),
+             radial-gradient(circle at 50% 60%, #4a2418, #1a0a06);
+  transition:background .22s ease,box-shadow .22s ease;
+}
+.fs-orb.sf{left:6px}
+.fs-orb.eb{right:6px}
+.fswitch[data-connected="sf"] .fs-orb.sf{
+  background:radial-gradient(circle at 30% 30%, #fff0e0 0%, #ff6048 35%, #b02818 88%);
+  box-shadow:0 0 10px 2px rgba(255,96,72,.85),0 0 22px 6px rgba(255,96,72,.35);
+}
+.fswitch[data-connected="eb"] .fs-orb.eb{
+  background:radial-gradient(circle at 30% 30%, #e6ffd2 0%, #6cc24a 40%, #1f7822 90%);
+  box-shadow:0 0 10px 2px rgba(110,200,90,.85),0 0 22px 6px rgba(110,200,90,.32);
+}
+.fs-lever{
+  position:absolute;
+  bottom:24px;             /* sits just above the pivot top */
+  left:50%;
+  width:36px;height:4px;
+  margin-left:-2px;
+  background:linear-gradient(180deg,#e0c89e 0%,#7a5832 55%,#2a1c10 100%);
+  border:1px solid #1a100a;border-radius:2px;
+  transform-origin:0 50%;
+  z-index:3;
+  transition:transform .42s cubic-bezier(.55,-.05,.32,1.35);
+}
+.fs-lever::after{
+  content:'';position:absolute;right:-7px;top:50%;transform:translateY(-50%);
+  width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #f0d8b8, #6b4824 70%, #2a1a10);
+  border:1px solid #1a100a;
+  box-shadow:0 1px 2px rgba(0,0,0,.4);
+}
+.fswitch[data-state="sf"] .fs-lever{transform:rotate(160deg)}
+.fswitch[data-state="eb"] .fs-lever{transform:rotate(20deg)}
+.flicker{animation:fs-flick .4s steps(8,end)}
+@keyframes fs-flick{
+  0%   {filter:brightness(2.4) saturate(1.4)}
+  10%  {filter:brightness(.35)}
+  22%  {filter:brightness(2.1)}
+  35%  {filter:brightness(.2)}
+  50%  {filter:brightness(1.85)}
+  62%  {filter:brightness(.5)}
+  78%  {filter:brightness(1.55)}
+  90%  {filter:brightness(.7)}
+  100% {filter:brightness(1)}
+}
+
 @media (max-width:720px){
   .birthday-name{font-size:3.8rem}
   .birthday-greet{font-size:.85rem;letter-spacing:.22em;gap:10px}
@@ -505,20 +756,24 @@ body{
   .mapsec{grid-template-columns:1fr}
   .hdr-title{font-size:1rem}
   .hdr-sub{font-size:.78rem}
+  .diary{display:none}
+  .diary-mobile{display:block}
+  .toolbar{padding:8px 12px;gap:8px}
+  .tab-btn{padding:5px 10px;font-size:.66rem;letter-spacing:.08em}
 }
 </style>
 </head>
 <body>
 <header class="birthday">
-  <div class="birthday-greet"><span class="birthday-rule"></span><span class="birthday-ornament">&#10047;</span> Happy 21<sup>st</sup> Birthday <span class="birthday-ornament">&#10047;</span><span class="birthday-rule"></span></div>
+  <div class="birthday-greet"><span class="birthday-rule"></span><span class="birthday-ornament">&#10047;</span> Happy <span class="birthday-num">21</span><sup>st</sup> Birthday <span class="birthday-ornament">&#10047;</span><span class="birthday-rule"></span></div>
   <div class="birthday-name">Lily</div>
-  <div class="birthday-sub">an itinerary for Tuesday, the twelfth of May, 2026</div>
-  <div class="birthday-love">— you are the best · with so much love —</div>
+  <div class="birthday-sub">suggestions for Tuesday, the twelfth of May, 2026</div>
+  <div class="birthday-love">— i enjoy your style and sense of humor • keep it up you crazy diamond —</div>
 </header>
 <div id="app"></div>
 <script>
 (function(){
-const EV=[{"id":"305714","name":"Exhibit | Shape of Thought: The Book as Art","venue":"The Bancroft Library","address":"","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[4,453,28,3,10,61],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/cJ-uC4n6qkGb7iGMM1uZYA.medium.png","description":"Shape of Thought: The Book as Art highlights works from The Bancroft Library's rich collection of contemporary artists' books."},{"id":"321847","name":"Exhibit | Divestment Now! Student Activism and the Anti-Apartheid Movement at UC Berkeley","venue":"The Rowell Exhibition Cases, Doe Library, 2nd floor","address":"","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[11,73,70,8,931,5],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/qYzTAkP5SkyIb-psbTOfhA.medium.png","description":"In 1985, UC Berkeley students transformed the campus into the heart of a powerful anti-apartheid divestment campaign."},{"id":"318047","name":"Indigo Girls","venue":"The Castro Theatre","address":"429 Castro Street","city":"San Francisco","isSF":true,"cost":null,"price":null,"priceHigh":null,"hasTickets":true,"tickets":[{"name":"TicketMaster","url":"http://ticketmaster.evyy.net/c/253158/264167/4272?u=https%3a%2f%2fwww.ticketmaster.com%2findigo-girls"}],"tags":[2,17,100,94,96,205],"dateStart":"2026-05-12T19:30:00Z","dateEnd":null,"allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/x78kFQYu-E6tvjYGrLT6vQ.medium.png","description":""},{"id":"323388","name":"Exhibit | The Etruscans Uncovered: The Phoebe A. Hearst Collection at UC Berkeley","venue":"Bernice Layne Brown Gallery","address":"Doe Library, University of California","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[5,32,3,4,28,10],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/sqQsErWgMkGTATU1x2B74w.medium.png","description":"The Etruscans Uncovered: an exhibit in Doe Library's Bernice Layne Brown Gallery from March 9 until May 17."},{"id":"321959","name":"Berkeley Shakespeare Company presents: Cyrano","venue":"Live Oak Theater","address":"1301 Shattuck Avenue","city":"Berkeley","isSF":false,"cost":"$21.05","price":21.05,"priceHigh":21.05,"hasTickets":false,"tickets":[],"tags":[2,19,100,17],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/EbvDgIGGbEqIxtxO9aXsJg.medium.png","description":"Berkeley Shakespeare Company presents a new adaptation of Rostand's Cyrano by Jeffrey Lo and Max Tachis."},{"id":"323009","name":"Jesse Solomon - Happy To Be Here Tour","venue":"Brick & Mortar","address":"1710 Mission Street","city":"San Francisco","isSF":true,"cost":"$25-$99","price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[17,100,94],"dateStart":"2026-05-12T20:00:00Z","dateEnd":null,"allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/Qc8JWl8OikeaX0WPC1y1zQ.medium.png","description":"Tickets $25-$99. Available at ticketweb.com"},{"id":"310943","name":"Electric Six + Tragedy: All Metal Tribute to The Bee Gees","venue":"Bottom Of the Hill","address":"1233 17th St","city":"San Francisco","isSF":true,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[17,100,94,96],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-13T00:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/PSeeICu6K0C5b1axifkWGA.medium.png","description":"Tragedy: All Metal Tribute to The Bee Gees takes disco, soft-rock and pop classics and completely reimagines them as glorious, red-hot heavy metal."},{"id":"310710","name":"Conga Grooves - Phrasing, Conversation & Ensemble Feel","venue":"Hardymon Hall @ The Jazzschool","address":"2087 Addison Street","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[17,84,15],"dateStart":"2026-05-12T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/4TfG4DI-RUuBMWh1BnN6gQ.medium.png","description":""},{"id":"322413","name":"Beginner Line Dance","venue":"Alcosta Senior and Community Center","address":"9300 Alcosta Blvd","city":"San Ramon","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[84,15],"dateStart":"2026-05-12T12:30:00Z","dateEnd":"2026-05-12T13:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/829a3082-a9fc-4380-9f47-f2c59537aa8d.medium.png","description":"Beginner Line Dance 12:30-1:30pm Tuesdays. Drop-in fees apply."},{"id":"323406","name":"Bringing Harmony to Life - Breema Class","venue":"The Breema Center","address":"6076 Claremont Ave.","city":"Oakland","isSF":false,"cost":"$20 (first time half price)","price":20,"priceHigh":20,"hasTickets":false,"tickets":[],"tags":[10,60,38,47],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T20:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/F24QMJvSFkGcHR4X5-5DwQ.medium.jpg","description":"Breema offers a practical way to experience the Principles that guide the entire universe, showing that we can think, feel, and move in harmony."},{"id":"323400","name":"Level 1 Improv Beginner Improv (Tuesdays)","venue":"All Out Comedy Theater","address":"2525B Telegraph Ave","city":"Oakland","isSF":false,"cost":"$364","price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[20,430],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T21:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/48r2TgULSUqj4nPBLSdCxA.medium.png","description":"Be Supported. Have Fun. Shy People Welcome. Learn the core fundamentals of improv. Inclusive and supportive environment."},{"id":"323401","name":"Yoga Flow and Sound Bath with Michael","venue":"Private Residence (Dogpatch)","address":"Dogpatch, San Francisco","city":"San Francisco","isSF":true,"cost":"$33.85","price":33.85,"priceHigh":33.85,"hasTickets":true,"tickets":[],"tags":[10,60,38,47],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T22:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/LKzv_VKG5kOd5JIwEdsbqQ.medium.png","description":"A gathering to journey through the physical, emotional, mental, and spiritual realms."},{"id":"323270","name":"Conundrum Chronicles: A StorySlam","venue":"The Marsh Theater","address":"1062 Valencia Street","city":"San Francisco","isSF":true,"cost":"$10-$100 (Sliding Scale)","price":10,"priceHigh":100,"hasTickets":false,"tickets":[],"tags":[20,430,2],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T20:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/XRm5O2MW2UKIIP82wHJeuA.medium.jpg","description":"Conundrum Chronicles StorySlam at The Marsh Theater. Throw your name in the hat to tell a true 5-minute story. May theme: Culture Clash!"},{"id":"319978","name":"Intro to Improv with Ryan Shaver","venue":"BATS Annex","address":"Fort Mason Center","city":"San Francisco","isSF":true,"cost":"$68.95","price":68.95,"priceHigh":68.95,"hasTickets":true,"tickets":[],"tags":[20,430],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T22:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/mfgR-yYvjUyipImYzOLZWw.medium.png","description":"BATS Improv intro class. Class starts May 12th; 1 session."},{"id":"320832","name":"Dissertation Talk: Decoupling Retinal Input from Physiological Constraints","venue":"Geballe Room, 220 Stephens Hall","address":"489 Minor Hall, UC Berkeley","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[7,40,76],"dateStart":"2026-05-12T10:00:00Z","dateEnd":"2026-05-12T11:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/qLb0B77ckUOkSOHuA9chBA.medium.png","description":"Bypassing the visual system's physiological constraints using high-precision optical stimulation of individual photoreceptors."},{"id":"316834","name":"Michel Foucault: Histoire de Folie (History of Madness)","venue":"Geballe Room, 220 Stephens Hall","address":"UC Berkeley","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[7,40,76],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/I8Yre_BPykWfgitYL-zffw.medium.png","description":"For Foucault, the subject of madness was fertile ground for exploring power, knowledge, and institutions. History of Madness (1961)."},{"id":"323380","name":"Spring 2026 Senior Thesis Exhibition: Water Marks","venue":"Worth Ryder Art Gallery","address":"Anthropology and Art Building Rm 116, UC Berkeley","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[28,3,4],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/tffB7sPY50moq8PtDkEW-Q.medium.png","description":"Water Marks: Spring 2026 Senior Thesis Exhibition. Multidisciplinary artworks by 30 graduating students."},{"id":"ext-comedy-confessional","name":"Comedy Confessional","venue":"O Reillys Pub","address":"622 Green St","city":"San Francisco","isSF":true,"cost":"Free (21+)","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[20],"dateStart":"2026-05-12T20:00:00Z","dateEnd":"2026-05-12T21:30:00Z","allDay":false,"imgMedium":null,"description":"Comedy Confessionals: the show where YOUR anonymous confessions fuel the laughs. Bay Area comedians riff, roast and redeem you. On Haight Street at O Reillys Bar.","sourceUrl":"https://dothebay.com/events/weekly/tue/comedy-confessional-tickets"},{"id":"ext-crab-snaring","name":"Catch and Cook Crabbing under Golden Gate Bridge","venue":"Torpedo Wharf","address":"Long Ave, Crissy Field","city":"San Francisco","isSF":true,"cost":"$150/person","price":150,"priceHigh":150,"hasTickets":true,"tickets":[{"name":"Viator","url":"https://www.viator.com/tours/San-Francisco/Learn-how-to-catch-and-cook-crab-under-Golden-Gate-Bridge-SF/d651-5593469P1"}],"tags":[8],"dateStart":"2026-05-12T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":null,"description":"A hands-on 3.5-hour coastal adventure. Catch Dungeness and rock crabs using top-rated Durasnare gear near the Golden Gate Bridge. Full catch-and-cook experience on-site. No license required.","sourceUrl":"https://www.viator.com/tours/San-Francisco/Learn-how-to-catch-and-cook-crab-under-Golden-Gate-Bridge-SF/d651-5593469P1"},{"id":"ext-seaplane-tour","name":"Golden Gate Seaplane Tour","venue":"Seaplane Adventures","address":"Sausalito Waterfront","city":"San Francisco","isSF":true,"cost":"$326/person","price":326,"priceHigh":326,"hasTickets":true,"tickets":[{"name":"Viator","url":"https://www.viator.com/tours/San-Francisco/San-Francisco-Golden-Gate-Seaplane-Tour/d651-2740GOLD"}],"tags":[17],"dateStart":"2026-05-12T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://media.tacdn.com/media/attractions-splice-spp-674x446/06/70/60/19.jpg","description":"30-minute seaplane adventure from Sausalito. Views of Golden Gate Bridge, Alcatraz, Muir Woods and more. Everyone gets a window seat.","sourceUrl":"https://www.viator.com/tours/San-Francisco/San-Francisco-Golden-Gate-Seaplane-Tour/d651-2740GOLD"},{"id":"ext-poetic-tuesdays","name":"Poetic Tuesdays at Yerba Buena Gardens","venue":"Jessie Square, Yerba Buena Gardens","address":"760 Mission St","city":"San Francisco","isSF":true,"cost":"Free","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[7],"dateStart":"2026-05-12T12:30:00Z","dateEnd":"2026-05-12T13:30:00Z","allDay":false,"imgMedium":null,"description":"The Poetic Tuesdays series turns lunchtime into a sumptuous literary repast, lighting up Jessie Square with a curated line-up of poets.","sourceUrl":"https://sf.funcheap.com/tomorrow/"},{"id":"ext-civic-center","name":"Civic Center Soundtrack: Free Lunchtime Concert","venue":"Fulton Plaza","address":"Fulton St near Hyde St","city":"San Francisco","isSF":true,"cost":"Free","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[17],"dateStart":"2026-05-12T12:00:00Z","dateEnd":"2026-05-12T15:00:00Z","allDay":false,"imgMedium":null,"description":"Free lunchtime concert series. Live music at Fulton Plaza Tuesdays and Thursdays 12pm to 3pm through October.","sourceUrl":"https://sf.funcheap.com/tomorrow/"},{"id":"ext-thrive-city","name":"Live Music Lunch Series at Thrive City","venue":"Thrive City","address":"1 Warriors Way","city":"San Francisco","isSF":true,"cost":"Free","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[17],"dateStart":"2026-05-12T12:00:00Z","dateEnd":"2026-05-12T14:00:00Z","allDay":false,"imgMedium":null,"description":"Free live music from Bay Area musicians at Thrive City next to Chase Center. Bring your lunch or grab food on-site.","sourceUrl":"https://sf.funcheap.com/tomorrow/"}];
+const EV=[{"id":"305714","name":"Exhibit | Shape of Thought: The Book as Art","venue":"The Bancroft Library","address":"","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[4,453,28,3,10,61],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/cJ-uC4n6qkGb7iGMM1uZYA.medium.png","description":"Shape of Thought: The Book as Art highlights works from The Bancroft Library's rich collection of contemporary artists' books."},{"id":"321847","name":"Exhibit | Divestment Now! Student Activism and the Anti-Apartheid Movement at UC Berkeley","venue":"The Rowell Exhibition Cases, Doe Library, 2nd floor","address":"","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[11,73,70,8,931,5],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/qYzTAkP5SkyIb-psbTOfhA.medium.png","description":"In 1985, UC Berkeley students transformed the campus into the heart of a powerful anti-apartheid divestment campaign."},{"id":"318047","name":"Indigo Girls","venue":"The Castro Theatre","address":"429 Castro Street","city":"San Francisco","isSF":true,"cost":null,"price":null,"priceHigh":null,"hasTickets":true,"soldOut":true,"tickets":[{"name":"TicketMaster","url":"http://ticketmaster.evyy.net/c/253158/264167/4272?u=https%3a%2f%2fwww.ticketmaster.com%2findigo-girls"}],"tags":[2,17,100,94,96,205],"dateStart":"2026-05-12T19:30:00Z","dateEnd":null,"allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/x78kFQYu-E6tvjYGrLT6vQ.medium.png","description":""},{"id":"323388","name":"Exhibit | The Etruscans Uncovered: The Phoebe A. Hearst Collection at UC Berkeley","venue":"Bernice Layne Brown Gallery","address":"Doe Library, University of California","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[5,32,3,4,28,10],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/sqQsErWgMkGTATU1x2B74w.medium.png","description":"The Etruscans Uncovered: an exhibit in Doe Library's Bernice Layne Brown Gallery from March 9 until May 17."},{"id":"321959","name":"Berkeley Shakespeare Company presents: Cyrano","venue":"Live Oak Theater","address":"1301 Shattuck Avenue","city":"Berkeley","isSF":false,"cost":"$21.05","price":21.05,"priceHigh":21.05,"hasTickets":false,"tickets":[],"tags":[2,19,100,17],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/EbvDgIGGbEqIxtxO9aXsJg.medium.png","description":"Berkeley Shakespeare Company presents a new adaptation of Rostand's Cyrano by Jeffrey Lo and Max Tachis."},{"id":"323009","name":"Jesse Solomon - Happy To Be Here Tour","venue":"Brick & Mortar","address":"1710 Mission Street","city":"San Francisco","isSF":true,"cost":"$25-$99","price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[17,100,94],"dateStart":"2026-05-12T20:00:00Z","dateEnd":null,"allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/Qc8JWl8OikeaX0WPC1y1zQ.medium.png","description":"Tickets $25-$99. Available at ticketweb.com"},{"id":"310943","name":"Electric Six + Tragedy: All Metal Tribute to The Bee Gees","venue":"Bottom Of the Hill","address":"1233 17th St","city":"San Francisco","isSF":true,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[17,100,94,96],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-13T00:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/PSeeICu6K0C5b1axifkWGA.medium.png","description":"Tragedy: All Metal Tribute to The Bee Gees takes disco, soft-rock and pop classics and completely reimagines them as glorious, red-hot heavy metal."},{"id":"310710","name":"Conga Grooves - Phrasing, Conversation & Ensemble Feel","venue":"Hardymon Hall @ The Jazzschool","address":"2087 Addison Street","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[17,84,15],"dateStart":"2026-05-12T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/4TfG4DI-RUuBMWh1BnN6gQ.medium.png","description":""},{"id":"322413","name":"Beginner Line Dance","venue":"Alcosta Senior and Community Center","address":"9300 Alcosta Blvd","city":"San Ramon","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[84,15],"dateStart":"2026-05-12T12:30:00Z","dateEnd":"2026-05-12T13:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/829a3082-a9fc-4380-9f47-f2c59537aa8d.medium.png","description":"Beginner Line Dance 12:30-1:30pm Tuesdays. Drop-in fees apply."},{"id":"323406","name":"Bringing Harmony to Life - Breema Class","venue":"The Breema Center","address":"6076 Claremont Ave.","city":"Oakland","isSF":false,"cost":"$20 (first time half price)","price":20,"priceHigh":20,"hasTickets":false,"tickets":[],"tags":[10,60,38,47],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T20:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/F24QMJvSFkGcHR4X5-5DwQ.medium.jpg","description":"Breema offers a practical way to experience the Principles that guide the entire universe, showing that we can think, feel, and move in harmony."},{"id":"323400","name":"Level 1 Improv Beginner Improv (Tuesdays)","venue":"All Out Comedy Theater","address":"2525B Telegraph Ave","city":"Oakland","isSF":false,"cost":"$364","price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[20,430],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T21:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/48r2TgULSUqj4nPBLSdCxA.medium.png","description":"Be Supported. Have Fun. Shy People Welcome. Learn the core fundamentals of improv. Inclusive and supportive environment."},{"id":"323401","name":"Yoga Flow and Sound Bath with Michael","venue":"Private Residence (Dogpatch)","address":"Dogpatch, San Francisco","city":"San Francisco","isSF":true,"cost":"$33.85","price":33.85,"priceHigh":33.85,"hasTickets":true,"tickets":[],"tags":[10,60,38,47],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T22:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/LKzv_VKG5kOd5JIwEdsbqQ.medium.png","description":"A gathering to journey through the physical, emotional, mental, and spiritual realms."},{"id":"323270","name":"Conundrum Chronicles: A StorySlam","venue":"The Marsh Theater","address":"1062 Valencia Street","city":"San Francisco","isSF":true,"cost":"$10-$100 (Sliding Scale)","price":10,"priceHigh":100,"hasTickets":false,"tickets":[],"tags":[20,430,2],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T20:30:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/XRm5O2MW2UKIIP82wHJeuA.medium.jpg","description":"Conundrum Chronicles StorySlam at The Marsh Theater. Throw your name in the hat to tell a true 5-minute story. May theme: Culture Clash!"},{"id":"319978","name":"Intro to Improv with Ryan Shaver","venue":"BATS Annex","address":"Fort Mason Center","city":"San Francisco","isSF":true,"cost":"$68.95","price":68.95,"priceHigh":68.95,"hasTickets":true,"tickets":[],"tags":[20,430],"dateStart":"2026-05-12T19:00:00Z","dateEnd":"2026-05-12T22:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/mfgR-yYvjUyipImYzOLZWw.medium.png","description":"BATS Improv intro class. Class starts May 12th; 1 session."},{"id":"320832","name":"Dissertation Talk: Decoupling Retinal Input from Physiological Constraints","venue":"Geballe Room, 220 Stephens Hall","address":"489 Minor Hall, UC Berkeley","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[7,40,76],"dateStart":"2026-05-12T10:00:00Z","dateEnd":"2026-05-12T11:00:00Z","allDay":false,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/qLb0B77ckUOkSOHuA9chBA.medium.png","description":"Bypassing the visual system's physiological constraints using high-precision optical stimulation of individual photoreceptors."},{"id":"316834","name":"Michel Foucault: Histoire de Folie (History of Madness)","venue":"Geballe Room, 220 Stephens Hall","address":"UC Berkeley","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[7,40,76],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/I8Yre_BPykWfgitYL-zffw.medium.png","description":"For Foucault, the subject of madness was fertile ground for exploring power, knowledge, and institutions. History of Madness (1961)."},{"id":"323380","name":"Spring 2026 Senior Thesis Exhibition: Water Marks","venue":"Worth Ryder Art Gallery","address":"Anthropology and Art Building Rm 116, UC Berkeley","city":"Berkeley","isSF":false,"cost":null,"price":null,"priceHigh":null,"hasTickets":false,"tickets":[],"tags":[28,3,4],"dateStart":"2026-05-11T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://citysparkstorage.blob.core.windows.net/portalimages/portalimages/tffB7sPY50moq8PtDkEW-Q.medium.png","description":"Water Marks: Spring 2026 Senior Thesis Exhibition. Multidisciplinary artworks by 30 graduating students."},{"id":"ext-comedy-confessional","name":"Comedy Confessional","venue":"O Reillys Pub","address":"622 Green St","city":"San Francisco","isSF":true,"cost":"Free (21+)","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[20],"dateStart":"2026-05-12T20:00:00Z","dateEnd":"2026-05-12T21:30:00Z","allDay":false,"imgMedium":null,"description":"Comedy Confessionals: the show where YOUR anonymous confessions fuel the laughs. Bay Area comedians riff, roast and redeem you. On Haight Street at O Reillys Bar.","sourceUrl":"https://dothebay.com/events/weekly/tue/comedy-confessional-tickets"},{"id":"ext-crab-snaring","name":"Catch and Cook Crabbing under Golden Gate Bridge","venue":"Torpedo Wharf","address":"Long Ave, Crissy Field","city":"San Francisco","isSF":true,"cost":"$150/person","price":150,"priceHigh":150,"hasTickets":true,"tickets":[{"name":"Viator","url":"https://www.viator.com/tours/San-Francisco/Learn-how-to-catch-and-cook-crab-under-Golden-Gate-Bridge-SF/d651-5593469P1"}],"tags":[8],"dateStart":"2026-05-12T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":null,"description":"A hands-on 3.5-hour coastal adventure. Catch Dungeness and rock crabs using top-rated Durasnare gear near the Golden Gate Bridge. Full catch-and-cook experience on-site. No license required.","sourceUrl":"https://www.viator.com/tours/San-Francisco/Learn-how-to-catch-and-cook-crab-under-Golden-Gate-Bridge-SF/d651-5593469P1"},{"id":"ext-seaplane-tour","name":"Golden Gate Seaplane Tour","venue":"Seaplane Adventures","address":"Sausalito Waterfront","city":"San Francisco","isSF":true,"cost":"$326/person","price":326,"priceHigh":326,"hasTickets":true,"tickets":[{"name":"Viator","url":"https://www.viator.com/tours/San-Francisco/San-Francisco-Golden-Gate-Seaplane-Tour/d651-2740GOLD"}],"tags":[17],"dateStart":"2026-05-12T00:00:00Z","dateEnd":null,"allDay":true,"imgMedium":"https://media.tacdn.com/media/attractions-splice-spp-674x446/06/70/60/19.jpg","description":"30-minute seaplane adventure from Sausalito. Views of Golden Gate Bridge, Alcatraz, Muir Woods and more. Everyone gets a window seat.","sourceUrl":"https://www.viator.com/tours/San-Francisco/San-Francisco-Golden-Gate-Seaplane-Tour/d651-2740GOLD"},{"id":"ext-poetic-tuesdays","name":"Poetic Tuesdays at Yerba Buena Gardens","venue":"Jessie Square, Yerba Buena Gardens","address":"760 Mission St","city":"San Francisco","isSF":true,"cost":"Free","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[7],"dateStart":"2026-05-12T12:30:00Z","dateEnd":"2026-05-12T13:30:00Z","allDay":false,"imgMedium":null,"description":"The Poetic Tuesdays series turns lunchtime into a sumptuous literary repast, lighting up Jessie Square with a curated line-up of poets.","sourceUrl":"https://sf.funcheap.com/tomorrow/"},{"id":"ext-civic-center","name":"Civic Center Soundtrack: Free Lunchtime Concert","venue":"Fulton Plaza","address":"Fulton St near Hyde St","city":"San Francisco","isSF":true,"cost":"Free","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[17],"dateStart":"2026-05-12T12:00:00Z","dateEnd":"2026-05-12T15:00:00Z","allDay":false,"imgMedium":null,"description":"Free lunchtime concert series. Live music at Fulton Plaza Tuesdays and Thursdays 12pm to 3pm through October.","sourceUrl":"https://sf.funcheap.com/tomorrow/"},{"id":"ext-thrive-city","name":"Live Music Lunch Series at Thrive City","venue":"Thrive City","address":"1 Warriors Way","city":"San Francisco","isSF":true,"cost":"Free","price":0,"priceHigh":0,"hasTickets":false,"tickets":[],"tags":[17],"dateStart":"2026-05-12T12:00:00Z","dateEnd":"2026-05-12T14:00:00Z","allDay":false,"imgMedium":null,"description":"Free live music from Bay Area musicians at Thrive City next to Chase Center. Bring your lunch or grab food on-site.","sourceUrl":"https://sf.funcheap.com/tomorrow/"}];
 const OR='540 31st St, Richmond, CA 94804',OO='4458 Pampas Ave, Oakland, CA 94619';
 const MKEY='AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY';
 const DR={'The Bancroft Library':13,'The Rowell Exhibition Cases, Doe Library, 2nd floor':13,'Bernice Layne Brown Gallery':13,'Live Oak Theater':14,'Hardymon Hall @ The Jazzschool':13,'Alcosta Senior and Community Center':40,'The Breema Center':15,'All Out Comedy Theater':16,'Geballe Room, 220 Stephens Hall':13,'Worth Ryder Art Gallery':13,'The Castro Theatre':30,'Brick & Mortar':32,'Bottom Of the Hill':30,'Private Residence (Dogpatch)':29,'The Marsh Theater':26,'BATS Annex':27,'O Reillys Pub':30,'Torpedo Wharf':35,'Seaplane Adventures':40,'Jessie Square, Yerba Buena Gardens':28,'Fulton Plaza':30,'Thrive City':32};
@@ -534,11 +789,192 @@ const allDay=EV.filter(e=>e.allDay||(e.dateStart&&e.dateStart.endsWith('T00:00:0
 const sfT=timed.filter(e=>e.isSF),ebT=timed.filter(e=>!e.isSF);
 const sfA=allDay.filter(e=>e.isSF),ebA=allDay.filter(e=>!e.isSF);
 function pack(evs){const sorted=[...evs].sort((a,b)=>ph(a.dateStart)-ph(b.dateStart)),cols=[],out=[];sorted.forEach(ev=>{const st=ph(ev.dateStart),en=ev.dateEnd?ph(ev.dateEnd):st+1;let ok=false;for(let c=0;c<cols.length;c++){if(cols[c]<=st){cols[c]=en;out.push({ev,col:c});ok=true;break}}if(!ok){cols.push(en);out.push({ev,col:cols.length-1})}});const mc=cols.length;out.forEach(o=>o.totalCols=mc);return out}
-function rEv(evs,cls){return pack(evs).map(function(o){const ev=o.ev,col=o.col,totalCols=o.totalCols,st=ph(ev.dateStart),en=ev.dateEnd?ph(ev.dateEnd):st+1,top=px(st),h=Math.max(px(en)-top,28),w=100/totalCols,l=col*w,i=ic(ev.tags),d=dm(ev.venue,'R');return '<div class="evb '+cls+'" data-idx="'+EV.indexOf(ev)+'" onclick="openModal(this)" style="top:'+top+'px;height:'+h+'px;left:'+l+'%;width:'+w+'%"><div class="ev-title">'+ev.name+'</div><div class="ev-city">'+ev.city+'</div>'+(d?'<span class="ev-drive"><i class="fa-solid fa-car"></i> '+d+' min</span>':'')+(ev.cost?'<span class="ev-cost">'+ev.cost+'</span>':'')+'<i class="fa-solid '+i+' ev-ico"></i></div>'}).join('')}
-function rPills(evs,cls){return evs.map(function(e){return '<div class="pill '+cls+'" data-idx="'+EV.indexOf(e)+'" onclick="openModal(this)"><i class="fa-solid '+ic(e.tags)+'"></i> '+e.name+'</div>'}).join('')}
+const STATE={query:'',tab:'sf'};
+function matchesQuery(ev){
+  const q=STATE.query.trim().toLowerCase();
+  if(!q)return true;
+  const hay=(ev.name+' '+(ev.venue||'')+' '+(ev.city||'')+' '+(ev.description||'')).toLowerCase();
+  return hay.includes(q);
+}
+function inTab(ev){
+  if(STATE.tab==='sf')return ev.isSF;
+  if(STATE.tab==='eb')return !ev.isSF;
+  return true;
+}
+function shouldDim(ev){return !matchesQuery(ev)}
+function evCardHTML(ev,cls,opts){
+  opts=opts||{};
+  const i=ic(ev.tags),d=dm(ev.venue,'R');
+  const dimCls=shouldDim(ev)?' dimmed':'';
+  const soldCls=ev.soldOut?' sold-out':'';
+  const style=opts.style?' style="'+opts.style+'"':'';
+  return '<div class="evb '+cls+soldCls+dimCls+'" data-idx="'+EV.indexOf(ev)+'" onclick="openModal(this)"'+style+'>'
+    +'<div class="ev-title">'+ev.name+'</div>'
+    +'<div class="ev-city">'+ev.city+'</div>'
+    +(d?'<span class="ev-drive"><i class="fa-solid fa-car"></i> '+d+' min</span>':'')
+    +(ev.cost?'<span class="ev-cost">'+ev.cost+'</span>':'')
+    +'<i class="fa-solid '+i+' ev-ico"></i>'
+    +(ev.soldOut?'<span class="sold-stamp"><span class="sold-stamp-text">SOLD OUT</span></span>':'')
+    +'</div>';
+}
+function rEv(evs,cls){return pack(evs).map(function(o){const ev=o.ev,st=ph(ev.dateStart),en=ev.dateEnd?ph(ev.dateEnd):st+1,top=px(st),h=Math.max(px(en)-top,28),w=100/o.totalCols,l=o.col*w;return evCardHTML(ev,cls,{style:'top:'+top+'px;height:'+h+'px;left:'+l+'%;width:'+w+'%'})}).join('')}
+function rEvMobile(evs){
+  // Build vertical clusters: events whose time-ranges overlap collapse into a
+  // single carousel row. Each cluster is positioned absolutely on the time
+  // axis; multi-event clusters render a horizontal scroll-snap rail.
+  const sorted=[...evs].sort((a,b)=>ph(a.dateStart)-ph(b.dateStart));
+  const clusters=[];
+  sorted.forEach(function(ev){
+    const st=ph(ev.dateStart),en=ev.dateEnd?ph(ev.dateEnd):st+1;
+    const cur=clusters[clusters.length-1];
+    if(cur&&st<cur.en){cur.evs.push(ev);if(en>cur.en)cur.en=en;}
+    else clusters.push({st:st,en:en,evs:[ev]});
+  });
+  return clusters.map(function(c){
+    const top=px(c.st),h=Math.max(px(c.en)-top,72);
+    const inner=c.evs.map(function(ev){return evCardHTML(ev,ev.isSF?'sf':'eb',{})}).join('');
+    if(c.evs.length===1){
+      return '<div class="mclust" style="top:'+top+'px;height:'+h+'px">'+inner+'</div>';
+    }
+    return '<div class="mclust mclust-multi" style="top:'+top+'px;height:'+h+'px"><div class="mrail">'+inner+'</div></div>';
+  }).join('');
+}
+function rPills(evs,cls){return evs.map(function(e){const dimCls=shouldDim(e)?' dimmed':'';return '<div class="pill '+cls+dimCls+'" data-idx="'+EV.indexOf(e)+'" onclick="openModal(this)"><i class="fa-solid '+ic(e.tags)+'"></i> '+e.name+'</div>'}).join('')}
 function rTL(){var h='';for(var i=S;i<=E;i++)h+='<div class="tl" style="top:'+px(i)+'px"><span class="hf">'+f12(i)+'</span></div>';return h}
 const TH=(E-S)*PX,HL=Array.from({length:E-S+1},function(_,i){return '<div class="tl hr" style="top:'+px(S+i)+'px"></div>'}).join('');
-document.getElementById('app').innerHTML='<div class="hdr"><div><div class="hdr-title"><i class="fa-solid fa-feather-pointed"></i>A Day Out About Town</div><div class="hdr-sub">San Francisco &amp; the East Bay · Tuesday, 12 May 2026</div></div><div class="hdr-right"><div class="leg"><div class="leg-dot" style="background:var(--sf)"></div>San Francisco</div><div class="leg"><div class="leg-dot" style="background:var(--eb)"></div>East Bay</div></div></div><div class="allday-bar"><span class="allday-lbl">All Day</span><div class="allday-inner">'+(sfA.length?'<div class="allday-sec"><span class="allday-sec-lbl sf">SF</span>'+rPills(sfA,'sf')+'</div>':'')+(ebA.length?'<div class="allday-sec"><span class="allday-sec-lbl eb">EB</span>'+rPills(ebA,'eb')+'</div>':'')+'</div></div><div class="diary"><div class="tax"><div class="taxl">'+rTL()+'</div></div><div class="cols"><div class="col-hdr-row"><div class="col-hdr sf">San Francisco Events</div><div class="col-hdr eb">East Bay Events</div></div><div class="col-inner" style="height:'+TH+'px"><div class="tlines">'+HL+'</div><div style="position:relative;height:'+TH+'px;flex:1;min-width:0">'+rEv(sfT,'sf')+'</div><div style="position:relative;height:'+TH+'px;flex:1;min-width:0">'+rEv(ebT,'eb')+'</div></div></div></div><div class="ovl" id="ovl" onclick="if(event.target===this)closeModal()"><div class="mcard" id="mcard"></div></div>';
+function renderToolbar(){
+  return '<div class="toolbar">'
+    +'<div class="search-wrap"><i class="fa-solid fa-magnifying-glass"></i>'
+    +'<input class="search-input" type="search" placeholder="filter by name, venue, city…" value="'+STATE.query.replace(/"/g,'&quot;')+'">'
+    +(STATE.query?'<button class="search-clear" data-act="clear">×</button>':'')
+    +'</div>'
+    +'</div>';
+}
+function renderSwitch(){
+  return '<div class="fswitch" data-state="'+STATE.tab+'" data-connected="'+STATE.tab+'" role="switch" aria-checked="'+(STATE.tab==='eb')+'">'
+    +'<button class="fs-label sf" data-side="sf" type="button">SAN FRANCISCO</button>'
+    +'<div class="fs-rig" role="presentation">'
+      +'<div class="fs-base"></div>'
+      +'<div class="fs-post sf"></div>'
+      +'<div class="fs-post eb"></div>'
+      +'<div class="fs-pivot-post"></div>'
+      +'<div class="fs-orb sf"></div>'
+      +'<div class="fs-orb eb"></div>'
+      +'<div class="fs-lever"></div>'
+    +'</div>'
+    +'<button class="fs-label eb" data-side="eb" type="button">EAST BAY</button>'
+  +'</div>';
+}
+function alldayHTML(){
+  const isSF=STATE.tab==='sf';
+  const evs=isSF?sfA:ebA,cls=isSF?'sf':'eb',lbl=isSF?'SF':'EB';
+  return '<span class="allday-lbl">All Day</span><div class="allday-inner">'
+    +(evs.length?'<div class="allday-sec"><span class="allday-sec-lbl '+cls+'">'+lbl+'</span>'+rPills(evs,cls)+'</div>':'')
+    +'</div>';
+}
+function diaryHTML(){
+  const isSF=STATE.tab==='sf';
+  const evs=isSF?sfT:ebT,cls=isSF?'sf':'eb',title=isSF?'San Francisco Events':'East Bay Events';
+  return '<div class="tax"><div class="taxl">'+rTL()+'</div></div>'
+    +'<div class="cols">'
+      +'<div class="col-hdr-row"><div class="col-hdr '+cls+'">'+title+'</div></div>'
+      +'<div class="col-inner" style="height:'+TH+'px">'
+        +'<div class="tlines">'+HL+'</div>'
+        +'<div style="position:relative;height:'+TH+'px;flex:1;min-width:0">'+rEv(evs,cls)+'</div>'
+      +'</div>'
+    +'</div>';
+}
+function mobileDiaryHTML(){
+  const filtered=timed.filter(function(e){return STATE.tab==='sf'?e.isSF:!e.isSF});
+  return '<div class="mcol-wrap"><div class="tax"><div class="taxl">'+rTL()+'</div></div>'
+    +'<div class="mcol" style="height:'+TH+'px"><div class="tlines">'+HL+'</div>'+rEvMobile(filtered)+'</div></div>';
+}
+function refreshDiaries(){
+  document.getElementById('allday-mount').innerHTML=alldayHTML();
+  document.getElementById('diary-mount').innerHTML=diaryHTML();
+  document.getElementById('diary-mobile-mount').innerHTML=mobileDiaryHTML();
+}
+function fireFlicker(){
+  const sw=document.querySelector('.fswitch');
+  if(!sw)return;
+  const t=STATE.tab;
+  const els=[sw.querySelector('.fs-label.'+t), sw.querySelector('.fs-orb.'+t)].filter(Boolean);
+  els.forEach(function(el){el.classList.remove('flicker')});
+  void sw.offsetWidth;
+  els.forEach(function(el){el.classList.add('flicker')});
+  setTimeout(function(){els.forEach(function(el){el.classList.remove('flicker')})},420);
+}
+let throwInFlight=false;
+function setTab(t){
+  if(STATE.tab===t||throwInFlight)return;
+  STATE.tab=t;
+  const sw=document.querySelector('.fswitch');
+  if(!sw)return;
+  throwInFlight=true;
+  sw.dataset.state=t;             // start lever animation
+  sw.removeAttribute('data-connected'); // de-energize both sides immediately
+  sw.setAttribute('aria-checked',t==='eb');
+  const lever=sw.querySelector('.fs-lever');
+  let done=false;
+  const land=function(){
+    if(done)return;
+    done=true;
+    lever.removeEventListener('transitionend',land);
+    clearTimeout(fb);
+    sw.dataset.connected=t;       // contact made → energize target side
+    fireFlicker();
+    refreshDiaries();
+    throwInFlight=false;
+  };
+  lever.addEventListener('transitionend',land);
+  const fb=setTimeout(land,560);  // safety fallback if transitionend never fires
+}
+function wire(){
+  const inp=document.querySelector('.search-input');
+  if(inp)inp.oninput=function(e){STATE.query=e.target.value;syncClear();refreshDiaries()};
+  const clr=document.querySelector('.search-clear');
+  if(clr)clr.onclick=clearSearch;
+  document.querySelectorAll('.fs-label').forEach(function(el){
+    el.onclick=function(ev){ev.stopPropagation();setTab(el.dataset.side)};
+  });
+  const rig=document.querySelector('.fs-rig');
+  if(rig)rig.onclick=function(){setTab(STATE.tab==='sf'?'eb':'sf')};
+}
+function clearSearch(){
+  STATE.query='';
+  const inp=document.querySelector('.search-input');
+  if(inp)inp.value='';
+  syncClear();
+  refreshDiaries();
+  if(inp)inp.focus();
+}
+function syncClear(){
+  const sw=document.querySelector('.search-wrap');
+  if(!sw)return;
+  let clr=sw.querySelector('.search-clear');
+  if(STATE.query&&!clr){
+    sw.insertAdjacentHTML('beforeend','<button class="search-clear">×</button>');
+    sw.querySelector('.search-clear').onclick=clearSearch;
+  } else if(!STATE.query&&clr){clr.remove()}
+}
+function renderApp(){
+  document.getElementById('app').innerHTML=
+    '<div class="hdr">'
+      +'<div class="hdr-l">'
+        +'<div class="hdr-title"><i class="fa-solid fa-feather-pointed"></i>Pick some things to do</div>'
+        +'<div class="hdr-sub">or we can just wing it</div>'
+      +'</div>'
+      +renderSwitch()
+    +'</div>'
+    +renderToolbar()
+    +'<div class="allday-bar" id="allday-mount">'+alldayHTML()+'</div>'
+    +'<div class="diary" id="diary-mount">'+diaryHTML()+'</div>'
+    +'<div class="diary-mobile" id="diary-mobile-mount">'+mobileDiaryHTML()+'</div>'
+    +'<div class="ovl" id="ovl" onclick="if(event.target===this)closeModal()"><div class="mcard" id="mcard"></div></div>';
+  wire();
+  fireFlicker();
+}
+renderApp();
 window.openModal=function(el){
   var idx=parseInt(el.dataset.idx),ev=EV[idx],i=ic(ev.tags),cls=ev.isSF?'sf':'eb',dR=dm(ev.venue,'R'),dO=dm(ev.venue,'O');
   var ts='';
